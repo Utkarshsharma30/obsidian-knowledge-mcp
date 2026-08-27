@@ -10,6 +10,8 @@ services:
         value: 0.0.0.0
       - key: MCP_PUBLIC_URL
         value: https://obsidian-knowledge-mcp.onrender.com
+      - key: MCP_AUTH_MODE
+        value: none
       - key: MCP_AUTH_TOKEN
         generateValue: true
       - key: DATABASE_URL
