@@ -45,7 +45,7 @@ The schema is mounted as an initialization script. For an existing volume, apply
 
 ## Deploy on Render
 
-This repository includes `render.yaml` for a Render Web Service and PostgreSQL database. In Render, create a new Blueprint from this repository and deploy it. Render will generate `MCP_AUTH_TOKEN`, use its `PORT`, and initialize the schema before starting the service. The default public endpoint is:
+This repository includes `render.yaml` for a Render free Web Service. In Render, create a new Blueprint from this repository and deploy it. Render will generate `MCP_AUTH_TOKEN` and use its `PORT`. Because Render requires payment information for its managed PostgreSQL service, provide `DATABASE_URL` from a free external PostgreSQL provider such as Neon or Supabase. Apply `database/schema.sql` to that database before querying. The default public endpoint is:
 
 ```text
 https://obsidian-knowledge-mcp.onrender.com/mcp
@@ -53,7 +53,7 @@ https://obsidian-knowledge-mcp.onrender.com/mcp
 
 If you change the service name, update `MCP_PUBLIC_URL` in the Render environment to the resulting `https://<service-name>.onrender.com` URL. Do not add `/mcp` to `MCP_PUBLIC_URL`; `/mcp` belongs only in the Claude connector URL.
 
-The Render service cannot read a Windows or OneDrive vault. Import the vault into the Render PostgreSQL database from a machine that can access both the vault and the database, or add a separate Render-accessible storage/import job before querying it.
+The Render service cannot read a Windows or OneDrive vault. Import the vault into the external PostgreSQL database from a machine that can access both the vault and the database, or add a separate Render-accessible storage/import job before querying it.
 
 ## MCP server
 
