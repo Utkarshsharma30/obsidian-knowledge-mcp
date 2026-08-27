@@ -1,0 +1,3 @@
+[console_scripts]
+obsidian-ingest = ingestion.importer:main
+obsidian-mcp = mcp_server.server:main

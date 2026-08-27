@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: obsidian-knowledge-mcp
+    runtime: python
+    buildCommand: pip install .
+    preDeployCommand: python -m database.initialize
+    startCommand: obsidian-mcp
+    envVars:
+      - key: MCP_SERVER_HOST
+        value: 0.0.0.0
+      - key: MCP_PUBLIC_URL
+        value: https://obsidian-knowledge-mcp.onrender.com
+      - key: MCP_AUTH_TOKEN
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: obsidian-knowledge-db
+          property: connectionString
+
+databases:
+  - name: obsidian-knowledge-db

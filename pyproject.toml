@@ -1,0 +1,27 @@
+[project]
+name = "obsidian-knowledge-mcp"
+version = "0.1.0"
+description = "PostgreSQL-backed MCP server for an Obsidian vault"
+requires-python = ">=3.11"
+dependencies = [
+  "mcp>=1.9.0,<2",
+  "psycopg[binary]>=3.2.0",
+  "python-dotenv>=1.0.0",
+  "PyYAML>=6.0.0",
+  "starlette>=0.47.0",
+  "uvicorn>=0.34.0"
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[project.scripts]
+obsidian-ingest = "ingestion.importer:main"
+obsidian-mcp = "mcp_server.server:main"
+
+[tool.setuptools]
+packages = ["database", "ingestion", "mcp_server"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

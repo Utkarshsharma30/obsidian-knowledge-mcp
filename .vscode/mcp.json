@@ -1,0 +1,10 @@
+{
+  "servers": {
+    "obsidian-knowledge": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["-m", "mcp_server.server"],
+      "envFile": "${workspaceFolder}/.env"
+    }
+  }
+}
