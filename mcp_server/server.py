@@ -16,7 +16,7 @@ transport = os.getenv("MCP_TRANSPORT", "streamable-http")
 host = os.getenv("MCP_SERVER_HOST", "0.0.0.0")
 port = int(os.getenv("MCP_SERVER_PORT") or os.getenv("PORT", "8000"))
 auth_token = os.getenv("MCP_AUTH_TOKEN")
-auth_mode = os.getenv("MCP_AUTH_MODE", "token" if auth_token else "none").lower()
+auth_mode = os.getenv("MCP_AUTH_MODE", "none").lower()
 public_url = os.getenv("MCP_PUBLIC_URL", f"http://{host}:{port}").rstrip("/")
 public_host = urlparse(public_url).netloc
 
