@@ -2,6 +2,7 @@ services:
   - type: web
     name: obsidian-knowledge-mcp
     runtime: python
+    plan: free
     buildCommand: pip install .
     startCommand: obsidian-mcp
     envVars:
