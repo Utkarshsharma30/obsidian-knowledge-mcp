@@ -15,4 +15,12 @@ services:
       - key: MCP_AUTH_TOKEN
         generateValue: true
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: obsidian-knowledge-db
+          property: connectionString
+
+databases:
+  - name: obsidian-knowledge-db
+    plan: starter
+    databaseName: knowledge
+    user: knowledge_app
