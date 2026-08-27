@@ -1,4 +1,5 @@
 from __future__ import annotations
+import asyncio
 import hmac
 import json, logging, os
 from urllib.parse import urlparse
@@ -48,48 +49,48 @@ mcp=FastMCP(**mcp_kwargs)
 def output(value): return json.dumps(value, default=str, ensure_ascii=False)
 
 @mcp.tool()
-def search_knowledge(query: str, limit: int = 20) -> str:
+async def search_knowledge(query: str, limit: int = 20) -> str:
     """Search concepts and source documents by name or full text."""
     if not query.strip(): raise ValueError("query must not be empty")
-    return output(db.search_knowledge(query, limit))
+    return output(await asyncio.to_thread(db.search_knowledge, query, limit))
 
 @mcp.tool()
-def get_node(node_name: str) -> str:
+async def get_node(node_name: str) -> str:
     """Get a node, tags, source document, and adjacent relationships."""
-    result=db.get_node(node_name)
+    result=await asyncio.to_thread(db.get_node, node_name)
     return output(result or {"error":"node not found"})
 
 @mcp.tool()
-def get_document(document_id: int) -> str:
+async def get_document(document_id: int) -> str:
     """Retrieve an original imported Markdown document by database id."""
-    result=db.get_document(document_id)
+    result=await asyncio.to_thread(db.get_document, document_id)
     return output(result or {"error":"document not found"})
 
 @mcp.tool()
-def get_related_nodes(node_name: str, depth: int = 1, relationship_type: str|None = None, limit: int = 20) -> str:
+async def get_related_nodes(node_name: str, depth: int = 1, relationship_type: str|None = None, limit: int = 20) -> str:
     """Find graph neighbors up to five hops away."""
-    return output(db.related(node_name, depth, relationship_type, limit))
+    return output(await asyncio.to_thread(db.related, node_name, depth, relationship_type, limit))
 
 @mcp.tool()
-def find_path(source: str, target: str, max_depth: int = 5) -> str:
+async def find_path(source: str, target: str, max_depth: int = 5) -> str:
     """Find one shortest relationship path between two nodes."""
-    return output({"path": db.find_path(source, target, max_depth)})
+    return output({"path": await asyncio.to_thread(db.find_path, source, target, max_depth)})
 
 @mcp.tool()
-def list_nodes(limit: int = 20, offset: int = 0, type: str|None = None, tag: str|None = None) -> str:
+async def list_nodes(limit: int = 20, offset: int = 0, type: str|None = None, tag: str|None = None) -> str:
     """List nodes with pagination and optional type/tag filters."""
-    return output(db.list_nodes(limit, offset, type, tag))
+    return output(await asyncio.to_thread(db.list_nodes, limit, offset, type, tag))
 
 @mcp.tool()
-def search_documents(query: str, limit: int = 20) -> str:
+async def search_documents(query: str, limit: int = 20) -> str:
     """Full-text search imported Wiki documents."""
     if not query.strip(): raise ValueError("query must not be empty")
-    return output(db.search_documents(query, limit))
+    return output(await asyncio.to_thread(db.search_documents, query, limit))
 
 @mcp.resource("knowledge://node/{node_name}")
-def node_resource(node_name: str) -> str:
+async def node_resource(node_name: str) -> str:
     """Structured node resource for MCP clients."""
-    return get_node(node_name)
+    return await get_node(node_name)
 
 if __name__ == "__main__":
     mcp.run(transport=transport)
